@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS bots;
+DROP TABLE IF EXISTS display;
 CREATE TABLE IF NOT EXISTS bots AS SELECT * from logs where id=null;
 CREATE TABLE IF NOT EXISTS display (id INTEGER PRIMARY KEY, name, cnt);
 
