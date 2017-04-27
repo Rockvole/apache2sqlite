@@ -37,7 +37,6 @@ insert or replace into display select 8, 'Help Pages', count(*) from logs where 
 
 insert or replace into display select 9, '/', count(*) from logs where request like '/';
 
-.headers on
 .mode column
 .width 4 15 7
 select * from display;
