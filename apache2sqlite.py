@@ -39,22 +39,23 @@ f = open(log_name, 'r')
 line_num = 1
 for line in f:
 	line_data = line_parser(line)
-	c.execute("   INSERT into logs "+
-	          "               (id, source, request, status, size, method, referer, agent, version, date, user) "+
-	          "        VALUES ("+str(line_num)+" ,"+
-	                      "'"+line_data['remote_host']+"' ,"+
-	                      "'"+line_data['request_url']+"' ,"+
-	                      " "+line_data['status']+" ,"+
-	                      " "+line_data['response_bytes_clf']+" ,"+
-	                      "'"+line_data['request_method']+"' ,"+
-	                      "'"+line_data['request_header_referer']+"' ,"+
-	                      "'"+line_data['request_header_user_agent']+"' ,"+
-	                      "'"+line_data['request_http_ver']+"' ,"+
-	                      "'"+line_data['time_received']+"' ,"+
-	                      "'"+line_data['remote_user']+"'"+
-	                      ")")
-	conn.commit()
-	
+	c.execute("   INSERT into logs "
+	          "               (id, source, request, status, size, method, referer, agent, version, date, user) "
+	          "        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+	          (str(line_num),
+	           line_data['remote_host'],
+	           line_data['request_url'],
+	           line_data['status'],
+	           line_data['response_bytes_clf'],
+	           line_data['request_method'],
+	           line_data['request_header_referer'],
+	           line_data['request_header_user_agent'],
+	           line_data['request_http_ver'],
+	           line_data['time_received'],
+	           line_data['remote_user'])
+	          )
+	conn.commit()	
+		
 	#pprint(line_data)
 	#if line_num > 0:
 	#	break
