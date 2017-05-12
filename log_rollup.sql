@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS bots;
+DROP TABLE IF EXISTS analytics;
 DROP TABLE IF EXISTS display;
 CREATE TABLE IF NOT EXISTS bots AS SELECT * from logs where id=null;
+CREATE TABLE IF NOT EXISTS analytics AS SELECT * from logs where id=null;
 CREATE TABLE IF NOT EXISTS display (id INTEGER PRIMARY KEY, name, cnt);
 
 insert into bots select * from logs where agent like '%Googlebot%';
@@ -31,6 +33,8 @@ insert or replace into display select 1, 'All Bots', count(*) from bots;
 
 -- Non Bot pages
 
+insert or replace into display values(99, '--------------------', '-------');
+
 insert or replace into display select 100, 'Demo Pages', count(*) from logs where request like '/demo/%';
 
 insert or replace into display select 101, 'Resource Pages', count(*) from logs where request like '/resources/%';
@@ -43,6 +47,18 @@ insert or replace into display select 104, 'Indoor Air', count(*) from logs wher
 
 insert or replace into display select 105, '/', count(*) from logs where request like '/';
 
+-- Analytics
+
+delete from logs where request like '/piwik/%';
+
+insert or replace into display values(199, '--------------------', '-------');
+
+insert into analytics select * from logs where request like '/js/p%';
+insert or replace into display select 200, 'Piwik', count(*) from analytics where request like '/js/p%';
+delete from logs where request like '/js/p%';
+
+-- Cleanup
+
 delete from logs where request like '/iaq%';
 delete from logs where request like '/robots.txt';
 delete from logs where request like '/favicon.ico';
@@ -51,6 +67,9 @@ delete from logs where request like '/images/%';
 delete from logs where request like '/css/%';
 delete from logs where request like '/js/%';
 
+-- Remaining Totals
+insert or replace into display select 1000, 'Remaining Traffic', count(*) from logs;
+
 .mode column
-.width 4 15 7
+.width 4 20 7
 select * from display;
