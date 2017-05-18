@@ -1,0 +1,7 @@
+#! /bin/bash
+# Install maxmind geoip library
+sudo pip install pygeoip
+
+# Set-up legacy geoip database instructions
+https://github.com/Rockvole/how2instructions/tree/master/geoip
+
