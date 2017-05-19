@@ -20,3 +20,7 @@ sqlite3 $db_loc < $this_dir/log_rollup.sql
 $this_dir/sqlite2apache.py $db_loc bots $tmp_dir/bots.log
 
 $this_dir/sqlite2apache.py $db_loc logs $tmp_dir/traffic.log
+
+echo
+
+sqlite3 $db_loc < $this_dir/country_count.sql
