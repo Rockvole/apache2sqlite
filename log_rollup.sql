@@ -35,7 +35,11 @@ insert into bots select * from logs where agent like '%Seznambot%';
 delete from logs where agent like '%Seznambot%';
 insert or replace into display select 8, 'Seznambot', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from bots where agent like '%Seznambot%';
 
-insert or replace into display select 10, '               TOTAL', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from bots;
+insert into bots select * from logs where agent like '%MegaIndex%';
+delete from logs where agent like '%MegaIndex%';
+insert or replace into display select 9, 'MegaIndex', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from bots where agent like '%MegaIndex%';
+
+insert or replace into display select 90, '               TOTAL', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from bots;
 
 -- Non Bot pages
 
