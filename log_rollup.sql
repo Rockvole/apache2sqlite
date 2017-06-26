@@ -39,6 +39,10 @@ insert into bots select * from logs where agent like '%MegaIndex%';
 delete from logs where agent like '%MegaIndex%';
 insert or replace into display select 9, 'MegaIndex', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from bots where agent like '%MegaIndex%';
 
+insert into bots select * from logs where agent like '%CCBot%';
+delete from logs where agent like '%CCBot%';
+insert or replace into display select 10, 'CCBot', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from bots where agent like '%CCBot%';
+
 insert or replace into display select 90, '               TOTAL', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from bots;
 
 -- Non Bot pages
