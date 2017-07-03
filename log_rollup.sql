@@ -43,6 +43,10 @@ insert into bots select * from logs where agent like '%CCBot%';
 delete from logs where agent like '%CCBot%';
 insert or replace into display select 10, 'CCBot', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from bots where agent like '%CCBot%';
 
+insert into bots select * from logs where agent like '%MJ12bot%';
+delete from logs where agent like '%MJ12bot%';
+insert or replace into display select 11, 'MJ12bot', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from bots where agent like '%MJ12bot%';
+
 insert or replace into display select 90, '               TOTAL', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from bots;
 
 -- Non Bot pages
