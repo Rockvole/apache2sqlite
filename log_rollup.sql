@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS analytics;
 DROP TABLE IF EXISTS display;
 CREATE TABLE IF NOT EXISTS bots AS SELECT * from logs where id=null;
 CREATE TABLE IF NOT EXISTS analytics AS SELECT * from logs where id=null;
+CREATE TABLE IF NOT EXISTS logs_err AS SELECT * from logs where id=null;
 CREATE TABLE IF NOT EXISTS display (id INTEGER PRIMARY KEY, name, cnt, err);
 
 insert or replace into display values(1, '----- Bots ---------', 'success', 'error');
@@ -94,6 +95,9 @@ delete from logs where request like '/xmlrpc.php';
 insert or replace into display values(999, '----- Totals -------', '-------', '-----');
 
 insert or replace into display select 1000, 'Remaining Traffic', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs;
+
+insert into logs_err select * from logs where status >= 400;
+delete from logs where status >= 400;
 
 update display set cnt=0, err=0 where cnt is null and err is null;
 
