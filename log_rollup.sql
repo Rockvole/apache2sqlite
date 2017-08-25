@@ -54,7 +54,7 @@ insert or replace into display select 90, '               TOTAL', sum(case when 
 
 insert or replace into display values(99, '----- Other Pages --', '-------', '------');
 
-insert or replace into display select 100, 'Reports Pages', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/reports/%';
+insert or replace into display select 100, 'My Reports Pages', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/reports/%';
 
 insert or replace into display select 101, 'Aversions Pages', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/aversions/%';
 
@@ -70,11 +70,13 @@ insert or replace into display select 106, 'Resource Pages', sum(case when statu
 
 insert or replace into display select 107, 'Help Pages', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/help/%';
 
-insert or replace into display select 108, 'Product Search', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/ajax/product/get%';
+insert or replace into display select 108, 'Autocomplete', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/ajax/autocomplete/get%';
 
-insert or replace into display select 109, 'Indoor Air', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/iaq%';
+insert or replace into display select 109, 'Generate Report', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/ajax/reports/symptoms%';
 
-insert or replace into display select 110, '/', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/';
+insert or replace into display select 110, 'Indoor Air', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/iaq%';
+
+insert or replace into display select 111, '/', sum(case when status < 400 then 1 else 0 end), sum(case when status >= 400 then 1 else 0 end) from logs where request like '/';
 
 -- Analytics
 
