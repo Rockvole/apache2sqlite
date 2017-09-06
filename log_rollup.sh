@@ -15,6 +15,8 @@ sqlite3 $db_loc 'drop table if exists logs;'
 
 $this_dir/apache2sqlite.py $apache_loc $db_loc
 
+sqlite3 $db_loc < $this_dir/graph_rollup.sql
+
 sqlite3 $db_loc < $this_dir/log_rollup.sql
 
 $this_dir/sqlite2apache.py $db_loc bots $tmp_dir/bots.log

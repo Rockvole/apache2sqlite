@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS bots;
 DROP TABLE IF EXISTS analytics;
 DROP TABLE IF EXISTS display;
+DROP TABLE IF EXISTS logs_err;
 CREATE TABLE IF NOT EXISTS bots AS SELECT * from logs where id=null;
 CREATE TABLE IF NOT EXISTS analytics AS SELECT * from logs where id=null;
 CREATE TABLE IF NOT EXISTS logs_err AS SELECT * from logs where id=null;
