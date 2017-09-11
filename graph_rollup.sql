@@ -1,68 +1,109 @@
+DROP TABLE IF EXISTS bots;
+DROP TABLE IF EXISTS analytics;
+DROP TABLE IF EXISTS logs_err;
+CREATE TABLE IF NOT EXISTS bots AS SELECT * from logs where id=null;
+CREATE TABLE IF NOT EXISTS analytics AS SELECT * from logs where id=null;
+CREATE TABLE IF NOT EXISTS logs_err AS SELECT * from logs where id=null;
+
 -- Bot pages
 
 CREATE TABLE IF NOT EXISTS bots_graph (date text, type int, google int, bing int, yandex int, baidu int, 
                                        yahoo int, duck int, seznam int, megaindex int, ccbot int, mj12 int, unique(date, type));
 
-insert or replace into bots_graph (date, type) values (strftime('%Y-%m-%d', 'now'), 0);
-insert or replace into bots_graph (date, type) values (strftime('%Y-%m-%d', 'now'), 1);
+insert or replace into bots_graph (date, type, google, bing, yandex, baidu, yahoo, duck, seznam, megaindex, ccbot, mj12) 
+                                   values (strftime('%Y-%m-%d', 'now'), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+insert or replace into bots_graph (date, type, google, bing, yandex, baidu, yahoo, duck, seznam, megaindex, ccbot, mj12) 
+                                   values (strftime('%Y-%m-%d', 'now'), 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
+-- Google
 update bots_graph set google = (select sum(case when status >= 400 then 1 else 0 end) from logs where agent like '%Googlebot%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update bots_graph set google = (select sum(case when status <  300 then 1 else 0 end) from logs where agent like '%Googlebot%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+insert into bots select * from logs where agent like '%Googlebot%';
+delete from logs where agent like '%Googlebot%';
 
+-- Bing
 update bots_graph set bing = (select sum(case when status >= 400 then 1 else 0 end) from logs where agent like '%bingbot%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update bots_graph set bing = (select sum(case when status <  300 then 1 else 0 end) from logs where agent like '%bingbot%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+insert into bots select * from logs where agent like '%bingbot%';
+delete from logs where agent like '%bingbot%';
 
+-- Yandex
 update bots_graph set yandex = (select sum(case when status >= 400 then 1 else 0 end) from logs where agent like '%Yandex%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update bots_graph set yandex = (select sum(case when status <  300 then 1 else 0 end) from logs where agent like '%Yandex%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+insert into bots select * from logs where agent like '%Yandex%';
+delete from logs where agent like '%Yandex%';
 
+-- Baidu
 update bots_graph set baidu = (select sum(case when status >= 400 then 1 else 0 end) from logs where agent like '%Baiduspider%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update bots_graph set baidu = (select sum(case when status <  300 then 1 else 0 end) from logs where agent like '%Baiduspider%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+insert into bots select * from logs where agent like '%Baiduspider%';
+delete from logs where agent like '%Baiduspider%';
 
+-- Yahoo
 update bots_graph set yahoo = (select sum(case when status >= 400 then 1 else 0 end) from logs where agent like '%Yahoo!%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update bots_graph set yahoo = (select sum(case when status <  300 then 1 else 0 end) from logs where agent like '%Yahoo!%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+insert into bots select * from logs where agent like '%Yahoo!%';
+delete from logs where agent like '%Yahoo!%';
 
+-- DuckDuckGo
 update bots_graph set duck = (select sum(case when status >= 400 then 1 else 0 end) from logs where agent like '%DuckDuckGo%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update bots_graph set duck = (select sum(case when status <  300 then 1 else 0 end) from logs where agent like '%DuckDuckGo%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+insert into bots select * from logs where agent like '%DuckDuckGo%';
+delete from logs where agent like '%DuckDuckGo%';
 
+-- Seznam
 update bots_graph set seznam = (select sum(case when status >= 400 then 1 else 0 end) from logs where agent like '%Seznambot%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update bots_graph set seznam = (select sum(case when status <  300 then 1 else 0 end) from logs where agent like '%Seznambot%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+insert into bots select * from logs where agent like '%Seznambot%';
+delete from logs where agent like '%Seznambot%';
 
+-- MegaIndex
 update bots_graph set megaindex = (select sum(case when status >= 400 then 1 else 0 end) from logs where agent like '%MegaIndex%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update bots_graph set megaindex = (select sum(case when status <  300 then 1 else 0 end) from logs where agent like '%MegaIndex%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+insert into bots select * from logs where agent like '%MegaIndex%';
+delete from logs where agent like '%MegaIndex%';
 
+-- CCBot
 update bots_graph set ccbot = (select sum(case when status >= 400 then 1 else 0 end) from logs where agent like '%CCBot%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update bots_graph set ccbot = (select sum(case when status <  300 then 1 else 0 end) from logs where agent like '%CCBot%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+insert into bots select * from logs where agent like '%CCBot%';
+delete from logs where agent like '%CCBot%';
 
+-- MJ12Bot
 update bots_graph set mj12 = (select sum(case when status >= 400 then 1 else 0 end) from logs where agent like '%MJ12bot%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update bots_graph set mj12 = (select sum(case when status <  300 then 1 else 0 end) from logs where agent like '%MJ12bot%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+insert into bots select * from logs where agent like '%MJ12bot%';
+delete from logs where agent like '%MJ12bot%';
 
 -- Non Bot pages
 
 CREATE TABLE IF NOT EXISTS page_graph (date text, type int, my_report int, aversion int, product int, ingredient int, symptom int, 
                                        demo int, resource int, help int, autocomplete int, report int, air int, root int, piwik int, unique(date, type));
 
-insert or replace into page_graph (date, type) values (strftime('%Y-%m-%d', 'now'), 0);
-insert or replace into page_graph (date, type) values (strftime('%Y-%m-%d', 'now'), 1);
+insert or replace into page_graph (date, type, my_report, aversion, product, ingredient, symptom, demo, resource, help, autocomplete, report, air, root, piwik) 
+                                   values (strftime('%Y-%m-%d', 'now'), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+insert or replace into page_graph (date, type, my_report, aversion, product, ingredient, symptom, demo, resource, help, autocomplete, report, air, root, piwik) 
+                                   values (strftime('%Y-%m-%d', 'now'), 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 update page_graph set my_report = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/reports/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
@@ -128,6 +169,20 @@ update page_graph set piwik = (select sum(case when status >= 400 then 1 else 0 
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set piwik = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/js/p%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
+
+-- Cleanup
+delete from logs where request like '/iaq%';
+delete from logs where request like '/robots.txt';
+delete from logs where request like '/favicon.ico';
+delete from logs where request like '/sitemap%';
+delete from logs where request like '/images/%';
+delete from logs where request like '/css/%';
+delete from logs where request like '/js/%';
+delete from logs where request like '%wp-content%';
+delete from logs where request like '%wp-login.php%';
+delete from logs where request like '%wlwmanifest.xml%';
+delete from logs where request like '%phpmyadmin%';
+delete from logs where request like '/xmlrpc.php';
 
 .headers on
 .mode column
