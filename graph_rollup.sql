@@ -105,72 +105,93 @@ insert or replace into page_graph (date, type, my_report, aversion, product, ing
 insert or replace into page_graph (date, type, my_report, aversion, product, ingredient, symptom, demo, resource, help, autocomplete, report, air, root, piwik) 
                                    values (strftime('%Y-%m-%d', 'now'), 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
+-- My Report Pages
 update page_graph set my_report = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/reports/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set my_report = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/reports/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Aversions Pages
 update page_graph set aversion = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/aversions/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set aversion = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/aversions/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Products Pages
 update page_graph set product = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/products/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set product = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/products/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Ingredients Pages
 update page_graph set ingredient = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/ingredients/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set ingredient = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/ingredients/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Symptoms Pages
 update page_graph set symptom = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/symptoms/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set symptom = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/symptoms/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Demo Pages
 update page_graph set demo = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/demo/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set demo = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/demo/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Resources Pages
 update page_graph set resource = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/resources/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set resource = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/resources/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Help Pages
 update page_graph set help = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/help/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set help = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/help/%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Autocomplete
 update page_graph set autocomplete = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/ajax/autocomplete/get%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set autocomplete = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/ajax/autocomplete/get%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Generate Report
 update page_graph set report = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/ajax/reports/symptoms%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set report = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/ajax/reports/symptoms%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Indoor Air
 update page_graph set air = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/iaq%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set air = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/iaq%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Root Page
 update page_graph set root = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set root = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Piwik
 update page_graph set piwik = (select sum(case when status >= 400 then 1 else 0 end) from logs where request like '/js/p%')
                   where date = strftime('%Y-%m-%d', 'now') and type=0;
 update page_graph set piwik = (select sum(case when status <  300 then 1 else 0 end) from logs where request like '/js/p%')
                   where date = strftime('%Y-%m-%d', 'now') and type=1;
 
+-- Archive
+insert into logs_err select * from logs where status >= 400;
+delete from logs where status >= 400;
+
+insert into analytics select * from logs where request like '/js/p%';
+delete from logs where request like '/js/p%';
+
 -- Cleanup
+delete from logs where request like '/piwik/%';
 delete from logs where request like '/iaq%';
 delete from logs where request like '/robots.txt';
 delete from logs where request like '/favicon.ico';
@@ -184,6 +205,7 @@ delete from logs where request like '%wlwmanifest.xml%';
 delete from logs where request like '%phpmyadmin%';
 delete from logs where request like '/xmlrpc.php';
 
+-- Display
 .headers on
 .mode column
 .width 10 4 7 7 7 7 7 7 7 7 7 7
