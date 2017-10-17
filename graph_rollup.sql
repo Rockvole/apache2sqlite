@@ -208,8 +208,13 @@ delete from logs where request like '/xmlrpc.php';
 -- Display
 .headers on
 .mode column
-.width 10 4 7 7 7 7 7 7 7 7 7 7
-select * from bots_graph;
-
 .width 10 4 7 7 7 7 7 7 7 7 7 7 7 7 7
-select * from page_graph;
+.print -------------------------------------------- Bot Access
+select * from bots_graph where type=1;
+.print -------------------------------------------- Page Access
+select * from page_graph where type=1;
+
+.print -------------------------------------------- Bot Errors
+select * from bots_graph where type=0;
+.print -------------------------------------------- Page Errors
+select * from page_graph where type=0;
