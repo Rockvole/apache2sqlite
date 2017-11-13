@@ -201,6 +201,7 @@ delete from logs where request like '/css/%';
 delete from logs where request like '/js/%';
 delete from logs where request like '%wp-content%';
 delete from logs where request like '%wp-login.php%';
+delete from logs where request like '%wp-admin%';
 delete from logs where request like '%wlwmanifest.xml%';
 delete from logs where request like '%phpmyadmin%';
 delete from logs where request like '/xmlrpc.php';
